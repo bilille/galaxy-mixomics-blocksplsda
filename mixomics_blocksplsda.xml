@@ -13,6 +13,7 @@
 
     <command detect_errors="exit_code">
         <![CDATA[
+        Rscript
         ${__tool_directory__}/blocksplsda_script.R
         #for $b in $blocks
             --block ${b.block}
