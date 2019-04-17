@@ -23,6 +23,18 @@ print(args$blocks_list)
 print(args$samples_file)
 print(args$ncomp)
 
+# loading libraries
+require(mixOmics)
+
+list_X <- c()
+
+for(i in 1:length(args$blocks_list))
+{
+    list_X[[i]] <- read.table(args$blocks_list[i], sep='\t')
+}
+
+print(list_X)
+
 
 
 
