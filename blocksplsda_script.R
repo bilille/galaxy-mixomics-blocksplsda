@@ -12,7 +12,7 @@ library(argparse)
 
 parser <- ArgumentParser(description='Run the mixOmics block.splsda function')
 
-parser$add_argument('--block', dest='blocks_list', action="append", required=TRUE, help="Block file")
+parser$add_argument('--block', dest='blocks_list', nargs=2, action="append", required=TRUE, help="Block file")
 parser$add_argument('--samples', dest='samples_file', required=TRUE, help="Samples description file")
 parser$add_argument('--ncomp', dest='ncomp', type='integer', required=TRUE, help="Samples description file")
 
@@ -28,15 +28,38 @@ require(mixOmics)
 
 list_X <- c()
 
-for(i in 1:length(args$blocks_list))
+summary(args$blocks_list)
+
+print(args$blocks_list[3,2])
+
+for(i in 1:nrow(args$blocks_list))
 {
-    list_X[[i]] <- read.table(args$blocks_list[i], sep='\t')
+    print(i)
+    list_X[[args$blocks_list[i,1]]] <- read.table(args$blocks_list[i,2], sep='\t', header=TRUE, row.names=1)
 }
 
 print(list_X)
 
+samples_descriptions <- read.table(args$samples_file, sep='\t', header=TRUE, row.names=1)
 
+print(samples_descriptions)
 
+Y <- factor(samples_descriptions[[1]])
+
+print(Y)
+
+block_nb <- nrow(args$blocks_list)
+
+design <- matrix(0, nrow = block_nb, ncol = block_nb)
+
+print(design)
+
+res_block_splsda <- block.splsda(X = list_X,
+                                 Y = Y,
+                                 ncomp = args$ncomp,
+                                 design = design)
+
+print(res_block_splsda)
 
 
 
