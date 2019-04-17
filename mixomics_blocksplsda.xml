@@ -3,21 +3,50 @@
     <description>N-integration  and  feature  selection  with  Projection  to  Latent  Structures models (PLS) with sparse Discriminant Analysis</description>
     
     <requirements>
-        <requirement type="package" version="6.6.0">bioconductor-mixomics</requirement>
+        <requirement type="package" version="6">bioconductor-mixomics</requirement>
+        <requirement type="package" version="2">r-argparse</requirement>
     </requirements>
     
     <stdio>
         <exit_code range="1:" level="fatal" />
     </stdio>
 
-    <command detect_errors="exit_code"><![CDATA[
-        TODO: Fill in command template.
-    ]]></command>
+    <command detect_errors="exit_code">
+        <![CDATA[
+        ${__tool_directory__}/blocksplsda_script.R
+        #for $b in $blocks
+            --block ${b.block}
+        #end for
+        --samples $samples
+        --ncomp $ncomp > ${output_file}
+        ]]>
+    </command>
 
     <inputs>
+        <repeat name="blocks" title="Blocks">
+            <param name="block" type="data" format="tabular" label="Block matrix" />
+        </repeat>
+        <param name="samples" type="data" format="tabular" label="Samples description"/>
+        <param name="ncomp" type="integer" value="2" min="1" label="Number of components to include in the model" />
+        <param name="correlation" type="boolean" checked="false" truevalue="--correlation" falsevalue="" label="Correlation between all blocks"/>
+        <section name="adv" title="Advanced Options" expanded="false">
+            <param name="scheme" type="select" label="Scheme">
+                <option value="horst" selected="true">horst</option>
+                <option value="factorial"            >factorial</option>
+                <option value="centroid"             >centroid</option>
+            </param>
+            <param name="mode" type="select" label="Mode">
+                <option value="regression" selected="true">regression</option>
+                <option value="canonical"                 >canonical</option>
+                <option value="invariant"                 >invariant</option>
+                <option value="classic"                   >classic</option>
+            </param>
+            <param name="maxiter" type="integer" value="100" min="1" label="Maximum number of iterations" />
+        </section>
     </inputs>
 
     <outputs>
+        <data name="output_file" format="txt" label="STDOUT output" />
     </outputs>
 
     <tests>
