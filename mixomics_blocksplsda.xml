@@ -16,7 +16,7 @@
         Rscript
         ${__tool_directory__}/blocksplsda_script.R
         #for $b in $blocks
-            --block ${b.block}
+            --block ${b.block.name} ${b.block}
         #end for
         --samples $samples
         --ncomp $ncomp > ${output_file}
