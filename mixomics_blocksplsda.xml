@@ -14,7 +14,7 @@
     <command detect_errors="aggressive">
         <![CDATA[
         Rscript
-        ${__tool_directory__}/blocksplsda_script.R
+        ${__tool_directory__}/mixomics_blocksplsda_script.R
         #for $b in $blocks
             --block
             #if $b.block_name
