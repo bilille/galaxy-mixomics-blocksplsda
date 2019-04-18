@@ -8,10 +8,10 @@
     </requirements>
     
     <stdio>
-        <exit_code range="1:" level="fatal" />
+        <!-- <exit_code range="1:" level="fatal" /> -->
     </stdio>
 
-    <command detect_errors="exit_code">
+    <command detect_errors="aggressive">
         <![CDATA[
         Rscript
         ${__tool_directory__}/blocksplsda_script.R
