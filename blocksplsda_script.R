@@ -14,14 +14,32 @@ parser <- ArgumentParser(description='Run the mixOmics block.splsda function')
 
 parser$add_argument('--block', dest='blocks_list', nargs=2, action="append", required=TRUE, help="Block file")
 parser$add_argument('--samples', dest='samples_file', required=TRUE, help="Samples description file")
-parser$add_argument('--ncomp', dest='ncomp', type='integer', required=TRUE, help="Samples description file")
+parser$add_argument('--ncomp', dest='ncomp', type='integer', required=TRUE, help="Number of components to include in the model")
+parser$add_argument('--correlation', dest='correlation', action="store_true", help="Add correlation between all blocks")
+parser$add_argument('--scheme', dest='scheme', required=TRUE, help="Scheme")
+parser$add_argument('--mode', dest='mode', required=TRUE, help="Mode")
+parser$add_argument('--maxiter', dest='maxiter', type='integer', required=TRUE, help="Maximum number of iterations")
+parser$add_argument('--outrdata', dest='output_rdata', required=TRUE, help="Output Rdata file")
 
 args <- parser$parse_args()
 
 ##
+print('Block file:')
 print(args$blocks_list)
+print('Sample description file:')
 print(args$samples_file)
+print('Number of components:')
 print(args$ncomp)
+print('Compute correlation between all blocks:')
+print(args$correlation)
+print('Scheme:')
+print(args$scheme)
+print('Mode:')
+print(args$mode)
+print('Max nb of iterations:')
+print(args$maxiter)
+print('Output Rdata file:')
+print(args$outrdata)
 
 # loading libraries
 require(mixOmics)
