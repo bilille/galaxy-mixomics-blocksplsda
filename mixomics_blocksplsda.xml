@@ -16,15 +16,27 @@
         Rscript
         ${__tool_directory__}/blocksplsda_script.R
         #for $b in $blocks
-            --block ${b.block.name} ${b.block}
+            --block
+            #if $b.block_name
+                $b.block_name
+            #else
+                $b.block.name
+            #end if
+            $b.block
         #end for
         --samples $samples
-        --ncomp $ncomp > ${output_file}
+        --ncomp $ncomp
+        $correlation
+        --scheme $adv.scheme
+        --mode $adv.mode
+        --maxiter $adv.maxiter
+        --outrdata $out_rdata
         ]]>
     </command>
 
     <inputs>
         <repeat name="blocks" title="Blocks">
+            <param name="block_name" type="text" label="Block name" />
             <param name="block" type="data" format="tabular" label="Block matrix" />
         </repeat>
         <param name="samples" type="data" format="tabular" label="Samples description"/>
@@ -47,7 +59,7 @@
     </inputs>
 
     <outputs>
-        <data name="output_file" format="txt" label="blocksplsda_stdout.txt" />
+        <data name="out_rdata" format="rdata" label="blocksplsda_output.rdata" />
     </outputs>
 
     <tests>
