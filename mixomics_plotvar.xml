@@ -1,0 +1,48 @@
+<tool id="mixomics_plotvar" name="mixOmics plotVar" version="0.1.0">
+
+    <description>Provides variables representation for (regularized) CCA, (sparse) PLS regression, PCA and (sparse) Regularized generalised CCA</description>
+    
+    <requirements>
+        <requirement type="package" version="6">bioconductor-mixomics</requirement>
+        <requirement type="package" version="2">r-argparse</requirement>
+    </requirements>
+    
+    <stdio>
+        <!-- <exit_code range="1:" level="fatal" /> -->
+    </stdio>
+
+    <command detect_errors="aggressive">
+        <![CDATA[
+        Rscript
+        ${__tool_directory__}/mixomics_plotvar_script.R
+        --input_rdata $input_rdata
+        $adv.legend
+        --cutoff $adv.cutoff
+        --output_pdf $output_pdf
+        ]]>
+    </command>
+
+    <inputs>
+        <param name="input_rdata" type="data" format="rdata" label="Input RData file from (sparse)(I)PCA, (regularized)CCA, (sparse)PLS(DA) or (sparse)(R)GCCA(DA)"/>
+        <section name="adv" title="Advanced Options" expanded="false">
+            <param name="legend" type="boolean" checked="true" truevalue="--legend" falsevalue="" label="Plot legend"/>
+            <param name="cutoff" type="float" value="0.85" min="0" max="1" label="Cut-off (0..1)" />
+        </section>
+    </inputs>
+
+    <outputs>
+        <data name="output_pdf" format="pdf" label="plotVar.pdf" />
+    </outputs>
+
+    <tests>
+    </tests>
+
+    <help><![CDATA[
+        TODO: Fill in help.
+    ]]></help>
+
+    <citations>
+        <citation type="doi">10.1371/journal.pcbi.1005752</citation>
+    </citations>
+
+</tool>
