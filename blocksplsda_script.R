@@ -24,21 +24,21 @@ parser$add_argument('--outrdata', dest='output_rdata', required=TRUE, help="Outp
 args <- parser$parse_args()
 
 ##
-print('Blocks:')
+print("Blocks:")
 print(args$blocks_list)
-print('Sample description file:')
+print("Sample description file:")
 print(args$samples_file)
-print('Number of components:')
+print("Number of components:")
 print(args$ncomp)
-print('Compute correlation between all blocks:')
+print("Compute correlation between all blocks:")
 print(args$correlation)
-print('Scheme:')
+print("Scheme:")
 print(args$scheme)
-print('Mode:')
+print("Mode:")
 print(args$mode)
-print('Max nb of iterations:')
+print("Max nb of iterations:")
 print(args$maxiter)
-print('Output Rdata file:')
+print("Output Rdata file:")
 print(args$output_rdata)
 
 # loading libraries
@@ -89,7 +89,7 @@ res_block_splsda <- block.splsda(X = list_X,
                                  near.zero.var = FALSE,
                                  all.outputs = TRUE)
 
-print("block.splsda object:")
+print("Block.splsda object:")
 print(res_block_splsda)
 
 save(res_block_splsda, file=args$output_rdata)
