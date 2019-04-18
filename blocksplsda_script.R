@@ -8,7 +8,7 @@ loc <- Sys.setlocale("LC_MESSAGES", "en_US.UTF-8")
 
 ## Main Function ##
 
-library(argparse)
+suppressPackageStartupMessages(require(argparse))
 
 parser <- ArgumentParser(description='Run the mixOmics block.splsda function')
 
@@ -24,7 +24,7 @@ parser$add_argument('--outrdata', dest='output_rdata', required=TRUE, help="Outp
 args <- parser$parse_args()
 
 ##
-print('Block file:')
+print('Blocks:')
 print(args$blocks_list)
 print('Sample description file:')
 print(args$samples_file)
@@ -39,20 +39,15 @@ print(args$mode)
 print('Max nb of iterations:')
 print(args$maxiter)
 print('Output Rdata file:')
-print(args$outrdata)
+print(args$output_rdata)
 
 # loading libraries
-require(mixOmics)
+suppressPackageStartupMessages(require(mixOmics))
 
 list_X <- c()
 
-summary(args$blocks_list)
-
-print(args$blocks_list[3,2])
-
 for(i in 1:nrow(args$blocks_list))
 {
-    print(i)
     list_X[[args$blocks_list[i,1]]] <- read.table(args$blocks_list[i,2], sep='\t', header=TRUE, row.names=1)
 }
 
@@ -79,25 +74,4 @@ res_block_splsda <- block.splsda(X = list_X,
 
 print(res_block_splsda)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+save(res_block_splsda, file=args$output_rdata)
