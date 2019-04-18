@@ -16,7 +16,6 @@
         Rscript
         ${__tool_directory__}/mixomics_plotindiv_script.R
         --input_rdata $input_rdata
-        --block_idx $adv.blocks
         $adv.legend
         $adv.ellipse
         --output_pdf $output_pdf
@@ -26,7 +25,6 @@
     <inputs>
         <param name="input_rdata" type="data" format="rdata" label="Input RData file from (sparse)(I)PCA, (regularized)CCA, (sparse)PLS(DA) or (sparse)(R)GCCA(DA)"/>
         <section name="adv" title="Advanced Options" expanded="false">
-            <param name="blocks" type="integer" value="0" min="0" label="Index of the block to plot. Default is 0 to plot all blocks" />
             <param name="legend" type="boolean" checked="true" truevalue="--legend" falsevalue="" label="Plot legend"/>
             <param name="ellipse" type="boolean" checked="true" truevalue="--ellipse" falsevalue="" label="Plot ellipse plots"/>
         </section>
