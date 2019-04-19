@@ -40,7 +40,7 @@ plotIndiv(res_block_splsda,
           legend = args$legend,
           ellipse = args$ellipse)
 
-for(k in 1:length(res_block_splsda$names[[3]]-1))
+for(k in 1:(length(res_block_splsda$names[[3]])-1))
 {
     name_block = res_block_splsda$names[[3]][k]
 
