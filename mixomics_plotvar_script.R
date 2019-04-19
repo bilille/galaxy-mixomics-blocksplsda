@@ -44,10 +44,10 @@ for(k in 1:(length(res_block_splsda$names[[3]])-1))
 {
     name_block = res_block_splsda$names[[3]][k]
 
-    plotIndiv(res_block_splsda,
-              blocks = k,
-              legend = args$legend,
-              cutoff = args$cutoff)
+    plotVar(res_block_splsda,
+            blocks = k,
+            legend = args$legend,
+            cutoff = args$cutoff)
 }
 
 dev.off()
