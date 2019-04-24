@@ -1,6 +1,6 @@
 <tool id="mixomics_plotindiv" name="mixOmics plotIndiv" version="0.1.0">
 
-    <description>Provides scatter plots for individuals (experimental units) representation in (sparse)(I)PCA,(regularized)CCA, (sparse)PLS(DA) and (sparse)(R)GCCA(DA)</description>
+    <description>provides scatter plots for individuals (experimental units) representation in (sparse)(I)PCA,(regularized)CCA, (sparse)PLS(DA) and (sparse)(R)GCCA(DA)</description>
     
     <requirements>
         <requirement type="package" version="6">bioconductor-mixomics</requirement>

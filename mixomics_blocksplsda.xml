@@ -1,47 +1,51 @@
-<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.1.0">
+<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.1.0" profile="16.04" workflow_compatible="true">
 
-    <description>N-integration  and  feature  selection  with  Projection  to  Latent  Structures models (PLS) with sparse Discriminant Analysis</description>
+    <description>performs N-integration  and  feature  selection  with  Projection  to  Latent  Structures models (PLS) with sparse Discriminant Analysis</description>
     
     <requirements>
         <requirement type="package" version="6">bioconductor-mixomics</requirement>
         <requirement type="package" version="2">r-argparse</requirement>
     </requirements>
     
-    <stdio>
-        <!-- <exit_code range="1:" level="fatal" /> -->
-    </stdio>
+<!--     <stdio>
+        <exit_code range="1:" level="fatal" />
+    </stdio> -->
 
     <command detect_errors="aggressive">
         <![CDATA[
         Rscript
         ${__tool_directory__}/mixomics_blocksplsda_script.R
-        #for $b in $blocks
+        #for ${b} in ${blocks}
             --block
-            #if $b.block_name
-                $b.block_name
+            #if ${b.block_name}
+                ${b.block_name}
             #else
-                $b.block.name
+                ${b.block.name}
             #end if
-            $b.block
+            ${b.keep}
+            ${b.data_matrix}
+            ${b.meta_var}
         #end for
-        --samples $samples
-        --ncomp $ncomp
-        $correlation
-        --scheme $adv.scheme
-        --mode $adv.mode
-        --maxiter $adv.maxiter
-        --outrdata $out_rdata
+        --samples ${samples}
+        --ncomp ${ncomp}
+        ${correlation}
+        --scheme ${adv.scheme}
+        --mode ${adv.mode}
+        --maxiter ${adv.maxiter}
+        --outrdata ${out_rdata}
         ]]>
     </command>
 
     <inputs>
         <repeat name="blocks" title="Blocks">
             <param name="block_name" type="text" label="Block name" />
-            <param name="block" type="data" format="tabular" label="Block matrix" />
+            <param name="keep" type="integer" value="0" min="0" label="Number of variables to select for each component" help="Default is to keep all variables" />
+            <param name="data_matrix" type="data" format="tabular" label="Data matrix" help="rows = variables, columns = samples" />
+            <param name="meta_var" type="data" format="tabular" optional="true" label="Variables metadata" help="rows = variables" />
         </repeat>
         <param name="samples" type="data" format="tabular" label="Samples description"/>
         <param name="ncomp" type="integer" value="2" min="1" label="Number of components to include in the model" />
-        <param name="correlation" type="boolean" checked="false" truevalue="--correlation" falsevalue="" label="Correlation between all blocks"/>
+        <param name="correlation" type="boolean" truevalue="--correlation" falsevalue="" checked="false" label="Correlation between all blocks"/>
         <section name="adv" title="Advanced Options" expanded="false">
             <param name="scheme" type="select" label="Scheme">
                 <option value="horst" selected="true">horst</option>

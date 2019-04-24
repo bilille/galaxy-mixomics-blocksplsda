@@ -12,7 +12,7 @@ suppressPackageStartupMessages(require(argparse))
 
 parser <- ArgumentParser(description='Run the mixOmics block.splsda function')
 
-parser$add_argument('--block', dest='blocks_list', nargs=2, action="append", required=TRUE, help="Block file")
+parser$add_argument('--block', dest='blocks_list', nargs=4, action="append", required=TRUE, help="Block name + nb variables to select + data matrix file + variables metadata file")
 parser$add_argument('--samples', dest='samples_file', required=TRUE, help="Samples description file")
 parser$add_argument('--ncomp', dest='ncomp', type='integer', required=TRUE, help="Number of components to include in the model")
 parser$add_argument('--correlation', dest='correlation', action="store_true", help="Add correlation between all blocks")
@@ -45,10 +45,25 @@ print(args$output_rdata)
 suppressPackageStartupMessages(require(mixOmics))
 
 list_X <- c()
+keepX <- c()
 
 for(i in 1:nrow(args$blocks_list))
 {
-    list_X[[args$blocks_list[i,1]]] <- read.table(args$blocks_list[i,2], sep='\t', header=TRUE, row.names=1)
+    block_name <- args$blocks_list[i,1]
+    block_keep <- strtoi(args$blocks_list[i,2])
+    block_data_matrix <- args$blocks_list[i,3]
+    block_meta_var <- args$blocks_list[i,4]
+    list_X[[block_name]] <- t(read.table(block_data_matrix, sep='\t', header=TRUE, row.names=1)) # transpose the matrix
+    nb_variables = ncol(list_X[[block_name]])
+    if(block_keep > 0)
+    {
+        keepX[[block_name]] <- rep(block_keep, args$ncomp)
+    }
+    else
+    {
+        keepX[[block_name]] <- rep(nb_variables, args$ncomp)
+    }
+    print(sprintf("Block %s contains %d variables and %d will be selected", block_name, nb_variables, block_keep))
 }
 
 # print(list_X)
@@ -79,6 +94,7 @@ print(design)
 res_block_splsda <- block.splsda(X = list_X,
                                  Y = Y,
                                  ncomp = args$ncomp,
+                                 keepX = keepX,
                                  design = design,
                                  scheme = args$scheme,
                                  mode = args$mode,

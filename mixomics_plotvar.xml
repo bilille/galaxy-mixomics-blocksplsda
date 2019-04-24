@@ -1,6 +1,6 @@
 <tool id="mixomics_plotvar" name="mixOmics plotVar" version="0.1.0">
 
-    <description>Provides variables representation for (regularized) CCA, (sparse) PLS regression, PCA and (sparse) Regularized generalised CCA</description>
+    <description>provides variables representation for (regularized) CCA, (sparse) PLS regression, PCA and (sparse) Regularized generalised CCA</description>
     
     <requirements>
         <requirement type="package" version="6">bioconductor-mixomics</requirement>
