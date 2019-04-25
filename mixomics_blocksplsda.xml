@@ -15,24 +15,26 @@
         <![CDATA[
         Rscript
         ${__tool_directory__}/mixomics_blocksplsda_script.R
-        #for ${b} in ${blocks}
+        #for $b in $blocks
             --block
-            #if ${b.block_name}
+            #if $b.block_name
                 ${b.block_name}
             #else
                 ${b.block.name}
             #end if
             ${b.keep}
             ${b.data_matrix}
-            ${b.meta_var}
+            ${b.variable_metadata}
         #end for
-        --samples ${samples}
+        --sample_metadata_in ${sample_metadata_in}
+        --sample_description_col ${sample_description_col}
         --ncomp ${ncomp}
         ${correlation}
         --scheme ${adv.scheme}
         --mode ${adv.mode}
         --maxiter ${adv.maxiter}
-        --outrdata ${out_rdata}
+        --rdata_out ${rdata_out}
+        --sample_metadata_out ${sample_metadata_out}
         ]]>
     </command>
 
@@ -41,9 +43,10 @@
             <param name="block_name" type="text" label="Block name" />
             <param name="keep" type="integer" value="0" min="0" label="Number of variables to select for each component" help="Default is to keep all variables" />
             <param name="data_matrix" type="data" format="tabular" label="Data matrix" help="rows = variables, columns = samples" />
-            <param name="meta_var" type="data" format="tabular" optional="true" label="Variables metadata" help="rows = variables" />
+            <param name="variable_metadata" type="data" format="tabular" optional="true" label="Variables metadata" help="rows = variables" />
         </repeat>
-        <param name="samples" type="data" format="tabular" label="Samples description"/>
+        <param name="sample_metadata_in" type="data" format="tabular" label="Samples metadata matrix" />
+        <param name="sample_description_col" type="integer" value="0" min="0" label="Sample description column number" help="Use the last column by default" />
         <param name="ncomp" type="integer" value="2" min="1" label="Number of components to include in the model" />
         <param name="correlation" type="boolean" truevalue="--correlation" falsevalue="" checked="false" label="Correlation between all blocks"/>
         <section name="adv" title="Advanced Options" expanded="false">
@@ -63,7 +66,11 @@
     </inputs>
 
     <outputs>
-        <data name="out_rdata" format="rdata" label="blocksplsda_output.rdata" />
+        <data name="rdata_out" format="rdata" label="${tool.name}_output.rdata" />
+        <data name="sample_metadata_out" format="tabular" label="${tool.name}_${sample_metadata_in.name}" />
+        <collection name="blocks_output" type="list" label="Blocks output">
+            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        </collection>
     </outputs>
 
     <tests>
