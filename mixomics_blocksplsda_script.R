@@ -121,3 +121,19 @@ print("Block.splsda object:")
 print(res_block_splsda)
 
 save(res_block_splsda, file=args$rdata_out)
+
+# print("Block.splsda variates:")
+# print(res_block_splsda$variates)
+
+for(bname in names(res_block_splsda$variates))
+{
+    # print(bname)
+    # print(res_block_splsda$variates[[bname]])
+    colnames(res_block_splsda$variates[[bname]]) <- paste("block.splsda", bname, gsub(" ", "_", colnames(res_block_splsda$variates[[bname]])), sep = "_")
+    # print(res_block_splsda$variates[[bname]])
+    sample_metadata <- cbind2(sample_metadata, res_block_splsda$variates[[bname]])
+}
+
+# print(sample_metadata)
+
+write.table(sample_metadata, file = args$sample_metadata_out, quote = TRUE, sep = "\t", row.names = TRUE, col.names = NA, na = "")
