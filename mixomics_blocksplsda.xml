@@ -13,7 +13,8 @@
 
     <command detect_errors="aggressive">
         <![CDATA[
-        Rscript
+        mkdir outdir
+        && Rscript
         ${__tool_directory__}/mixomics_blocksplsda_script.R
         #for $b in $blocks
             --block
@@ -33,8 +34,14 @@
         --scheme ${adv.scheme}
         --mode ${adv.mode}
         --maxiter ${adv.maxiter}
+        ${adv.scale}
+        --init ${adv.init}
+        --tol ${adv.tol}
+        ${adv.nearzerovar}
         --rdata_out ${rdata_out}
         --sample_metadata_out ${sample_metadata_out}
+        --variable_metadata_outdir outdir
+        && pwd && ls -l
         ]]>
     </command>
 
@@ -62,14 +69,21 @@
                 <option value="classic"                   >classic</option>
             </param>
             <param name="maxiter" type="integer" value="100" min="1" label="Maximum number of iterations" />
+            <param name="scale" type="boolean" truevalue="--scale" falsevalue="" checked="true" label="Scale" help="if checked, each block is standardized to zero means and unit variances" />
+            <param name="init" type="select" label="Init">
+                <option value="svd" selected="true">svd</option>
+                <option value="svd.single"         >svd.single</option>
+            </param>
+            <param name="tol" type="float" value="1e-06" min="0" label="Convergence stopping value (tol)" />
+            <param name="nearzerovar" type="boolean" truevalue="--nearzerovar" falsevalue="" checked="false" label="Should be set to TRUE in particular for data with many zero values" />
         </section>
     </inputs>
 
     <outputs>
-        <data name="rdata_out" format="rdata" label="${tool.name}_output.rdata" />
-        <data name="sample_metadata_out" format="tabular" label="${tool.name}_${sample_metadata_in.name}" />
-        <collection name="blocks_output" type="list" label="Blocks output">
-            <discover_datasets pattern="__name_and_ext__" directory="outputs" />
+        <data name="rdata_out" format="rdata" label="${tool.id}_output.rdata" />
+        <data name="sample_metadata_out" format="tabular" label="${tool.id}_${sample_metadata_in.name}" />
+        <collection name="blocks_output" type="list" label="${tool.id}_blocks_output">
+            <discover_datasets pattern="(?P&lt;designation&gt;.+)\.tsv" directory="outdir" format="tabular" />
         </collection>
     </outputs>
 

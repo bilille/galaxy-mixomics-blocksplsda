@@ -20,8 +20,13 @@ parser$add_argument('--correlation', dest='correlation', action="store_true", he
 parser$add_argument('--scheme', dest='scheme', required=TRUE, help="Scheme")
 parser$add_argument('--mode', dest='mode', required=TRUE, help="Mode")
 parser$add_argument('--maxiter', dest='maxiter', type='integer', required=TRUE, help="Maximum number of iterations")
+parser$add_argument('--scale', dest='scale', action="store_true", help="Each block is standardized to zero means and unit variances")
+parser$add_argument('--init', dest='init', required=TRUE, help="Init (svd or svd.single)")
+parser$add_argument('--tol', dest='tol', type='double', required=TRUE, help="Convergence stopping value")
+parser$add_argument('--nearzerovar', dest='nearzerovar', action="store_true", help="Should be set in particular for data with many zero values")
 parser$add_argument('--rdata_out', dest='rdata_out', required=TRUE, help="Output Rdata file")
 parser$add_argument('--sample_metadata_out', dest='sample_metadata_out', required=TRUE, help="Output sample metadata file")
+parser$add_argument('--variable_metadata_outdir', dest='variable_metadata_outdir', required=TRUE, help="Output variable metadata directory")
 
 args <- parser$parse_args()
 
@@ -42,10 +47,18 @@ print("Mode:")
 print(args$mode)
 print("Max nb of iterations:")
 print(args$maxiter)
+print("Scale:")
+print(args$scale)
+print("Tol:")
+print(args$tol)
+print("near.zero.var:")
+print(args$nearzerovar)
 print("Output Rdata file:")
 print(args$rdata_out)
 print("Output sample metadata file:")
 print(args$sample_metadata_out)
+print("Output variable metadata directory:")
+print(args$variable_metadata_outdir)
 
 # loading libraries
 suppressPackageStartupMessages(require(mixOmics))
@@ -58,7 +71,7 @@ for(i in 1:nrow(args$blocks_list))
     block_name <- args$blocks_list[i,1]
     block_keep <- strtoi(args$blocks_list[i,2])
     block_data_matrix <- args$blocks_list[i,3]
-    block_meta_var <- args$blocks_list[i,4]
+    # block_meta_var <- args$blocks_list[i,4]
     list_X[[block_name]] <- t(read.table(block_data_matrix, sep='\t', header=TRUE, row.names=1)) # transpose the matrix
     nb_variables = ncol(list_X[[block_name]])
     if(block_keep > 0)
@@ -77,7 +90,7 @@ for(i in 1:nrow(args$blocks_list))
 sample_metadata <- read.table(args$sample_metadata_in, sep='\t', header=TRUE, row.names=1)
 
 print("Sample metadata matrix:")
-print(sample_metadata)
+print(head(sample_metadata))
 
 description_column <- ncol(sample_metadata)
 if(args$sample_description_col > 0)
@@ -110,11 +123,11 @@ res_block_splsda <- block.splsda(X = list_X,
                                  design = design,
                                  scheme = args$scheme,
                                  mode = args$mode,
-                                 scale = TRUE,
-                                 init = "svd",
-                                 tol = 1e-06,
+                                 scale = args$scale,
+                                 init = args$init,
+                                 tol = args$tol,
                                  max.iter = args$maxiter,
-                                 near.zero.var = FALSE,
+                                 near.zero.var = args$nearzerovar,
                                  all.outputs = TRUE)
 
 print("Block.splsda object:")
@@ -136,4 +149,32 @@ for(bname in names(res_block_splsda$variates))
 
 # print(sample_metadata)
 
-write.table(sample_metadata, file = args$sample_metadata_out, quote = TRUE, sep = "\t", row.names = TRUE, col.names = NA, na = "")
+write.table(sample_metadata, file = args$sample_metadata_out, quote = TRUE, sep = "\t", row.names = TRUE, col.names = NA)
+
+# print("Block.splsda loadings:")
+# print(res_block_splsda$loadings)
+
+for(i in 1:nrow(args$blocks_list))
+{
+    block_name <- args$blocks_list[i,1]
+    # block_keep <- strtoi(args$blocks_list[i,2])
+    # block_data_matrix <- args$blocks_list[i,3]
+    block_meta_var <- args$blocks_list[i,4]
+
+    meta_variable <- res_block_splsda$loadings[[block_name]]
+
+    # print(head(meta_variable))
+
+    if(block_meta_var != "None")
+    {
+        input_meta_variable <- read.table(block_meta_var, sep='\t', header=TRUE, row.names=1)
+        # print(head(input_meta_variable))
+        meta_variable <- cbind2(input_meta_variable, meta_variable)
+    }
+
+    print(head(meta_variable))
+
+    block_meta_var_output_filename <- paste("mixomics_blocksplsda_block_", block_name, "_variable_metadata.tsv", sep="")
+
+    write.table(meta_variable, file = paste(args$variable_metadata_outdir,block_meta_var_output_filename, sep='/'), quote = TRUE, sep = "\t", row.names = TRUE, col.names = NA)
+}
