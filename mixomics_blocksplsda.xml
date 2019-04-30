@@ -41,7 +41,6 @@
         --rdata_out ${rdata_out}
         --sample_metadata_out ${sample_metadata_out}
         --variable_metadata_outdir outdir
-        && pwd && ls -l
         ]]>
     </command>
 
@@ -87,8 +86,23 @@
         </collection>
     </outputs>
 
-    <tests>
-    </tests>
+<!--     <tests>
+        <test>
+            <repeat name="block_1">
+                <param name="block_name" value="Block1" />
+                <param name="keep" value="3" />
+                <param name="data_matrix" value="block_1_data_matrix.tsv" />
+                <param name="variable_metadata" value="block_1_meta_var.tsv" />
+            </repeat>
+            <repeat name="block_2">
+                <param name="block_name" value="Block2" />
+                <param name="keep" value="3" />
+                <param name="data_matrix" value="block_2_data_matrix.tsv" />
+                <param name="variable_metadata" value="block_2_meta_var.tsv" />
+            </repeat>
+            <param name="sample_metadata_in" value="sample_meta.tsv" />
+        </test>
+    </tests> -->
 
     <help><![CDATA[
         TODO: Fill in help.
