@@ -6,8 +6,7 @@ options( show.error.messages=F, error = function () { cat( geterrmessage(), file
 # we need that to not crash galaxy with an UTF8 error on German LC settings.
 loc <- Sys.setlocale("LC_MESSAGES", "en_US.UTF-8")
 
-## Main Function ##
-
+## Get parameters ##
 suppressPackageStartupMessages(require(argparse))
 
 parser <- ArgumentParser(description='Run the mixOmics block.splsda function')
@@ -30,7 +29,7 @@ parser$add_argument('--variable_metadata_outdir', dest='variable_metadata_outdir
 
 args <- parser$parse_args()
 
-##
+## Print parameters
 print("Blocks:")
 print(args$blocks_list)
 print("Sample metadata file:")
@@ -60,19 +59,25 @@ print(args$sample_metadata_out)
 print("Output variable metadata directory:")
 print(args$variable_metadata_outdir)
 
-# loading libraries
+## Loading libraries
 suppressPackageStartupMessages(require(mixOmics))
 
+## Read and prepare block datasets
 list_X <- c()
 keepX <- c()
 
 for(i in 1:nrow(args$blocks_list))
 {
+    # Read block input parameters
     block_name <- args$blocks_list[i,1]
     block_keep <- strtoi(args$blocks_list[i,2])
     block_data_matrix <- args$blocks_list[i,3]
     # block_meta_var <- args$blocks_list[i,4]
-    list_X[[block_name]] <- t(read.table(block_data_matrix, sep='\t', header=TRUE, row.names=1)) # transpose the matrix
+
+    # Store block data matrices
+    list_X[[block_name]] <- t(read.table(block_data_matrix, sep='\t', header=TRUE, row.names=1)) # transpose the matrix so that the samples become rows and the variables become columns
+
+    # Set the nb of variables to keep
     nb_variables = ncol(list_X[[block_name]])
     if(block_keep > 0)
     {
@@ -87,10 +92,11 @@ for(i in 1:nrow(args$blocks_list))
 
 # print(list_X)
 
+## Read sample metadata file and set description factor matrix
 sample_metadata <- read.table(args$sample_metadata_in, sep='\t', header=TRUE, row.names=1)
 
-print("Sample metadata matrix:")
-print(head(sample_metadata))
+# print("Sample metadata matrix:")
+# print(head(sample_metadata))
 
 description_column <- ncol(sample_metadata)
 if(args$sample_description_col > 0)
@@ -103,6 +109,7 @@ Y <- factor(sample_metadata[[description_column]])
 print("Y factor matrix:")
 print(Y)
 
+## Generate design matrix
 block_nb <- nrow(args$blocks_list)
 
 design <- matrix(0, nrow = block_nb, ncol = block_nb)
@@ -113,8 +120,12 @@ if(args$correlation)
     diag(design) <- 0
 }
 
-print("Design matrix:")
-print(design)
+# print("Design matrix:")
+# print(design)
+
+###################
+## Main function ##
+###################
 
 res_block_splsda <- block.splsda(X = list_X,
                                  Y = Y,
@@ -133,8 +144,10 @@ res_block_splsda <- block.splsda(X = list_X,
 print("Block.splsda object:")
 print(res_block_splsda)
 
+## Save output Rdata file
 save(res_block_splsda, file=args$rdata_out)
 
+## Save output sample metadata file
 # print("Block.splsda variates:")
 # print(res_block_splsda$variates)
 
@@ -142,8 +155,12 @@ for(bname in names(res_block_splsda$variates))
 {
     # print(bname)
     # print(res_block_splsda$variates[[bname]])
+
+    # Format the column names to add the block name and replace spaces
     colnames(res_block_splsda$variates[[bname]]) <- paste("block.splsda", bname, gsub(" ", "_", colnames(res_block_splsda$variates[[bname]])), sep = "_")
     # print(res_block_splsda$variates[[bname]])
+
+    # Append the new columns to the sample metadata matrix
     sample_metadata <- cbind2(sample_metadata, res_block_splsda$variates[[bname]])
 }
 
@@ -151,30 +168,33 @@ for(bname in names(res_block_splsda$variates))
 
 write.table(sample_metadata, file = args$sample_metadata_out, quote = TRUE, sep = "\t", row.names = TRUE, col.names = NA)
 
+## Save output variable metadata files in output directory
 # print("Block.splsda loadings:")
 # print(res_block_splsda$loadings)
 
 for(i in 1:nrow(args$blocks_list))
 {
+    # Read again block input parameters
     block_name <- args$blocks_list[i,1]
     # block_keep <- strtoi(args$blocks_list[i,2])
     # block_data_matrix <- args$blocks_list[i,3]
     block_meta_var <- args$blocks_list[i,4]
 
     meta_variable <- res_block_splsda$loadings[[block_name]]
-
     # print(head(meta_variable))
 
+    # Read input block variable metadata files if provided (optional)
     if(block_meta_var != "None")
     {
         input_meta_variable <- read.table(block_meta_var, sep='\t', header=TRUE, row.names=1)
         # print(head(input_meta_variable))
+
+        # Append the new columns to the variable metadata matrix
         meta_variable <- cbind2(input_meta_variable, meta_variable)
     }
 
-    print(head(meta_variable))
+    # print(head(meta_variable))
 
     block_meta_var_output_filename <- paste("mixomics_blocksplsda_block_", block_name, "_variable_metadata.tsv", sep="")
-
     write.table(meta_variable, file = paste(args$variable_metadata_outdir,block_meta_var_output_filename, sep='/'), quote = TRUE, sep = "\t", row.names = TRUE, col.names = NA)
 }
