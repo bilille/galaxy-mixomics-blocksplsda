@@ -1,9 +1,9 @@
 <tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.1.0" profile="16.04" workflow_compatible="true">
 
-    <description>performs N-integration  and  feature  selection  with  Projection  to  Latent  Structures models (PLS) with sparse Discriminant Analysis</description>
+    <description>performs N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis</description>
     
     <requirements>
-        <requirement type="package" version="6">bioconductor-mixomics</requirement>
+        <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
         <requirement type="package" version="2">r-argparse</requirement>
     </requirements>
     
@@ -106,7 +106,116 @@
 
     <help>
         <![CDATA[
-        TODO: Fill in help.
+.. class:: infomark
+
+**Authors** Pierre Pericard (pierre.pericard@pasteur-lille.fr)
+
+---------------------------------------------------
+
+.. class:: infomark
+
+**Please cite**
+
+Rohart F, Gautier B, Singh A, Lê Cao KA (2017) mixOmics: An R package for ‘omics feature selection and multiple data integration.
+PLOS Computational Biology 13(11): e1005752. https://doi.org/10.1371/journal.pcbi.1005752
+
+---------------------------------------------------
+
+======================
+mixOmics blocks.splsda
+======================
+
+-----------
+Description
+-----------
+
+The blocks.splsda function is part of the mixOmics package for exploration and integration of Omics datasets.
+Performs N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis.
+
+-----------
+Input files
+-----------
+
+For each block (min 2 blocks):
+==============================
+
++------------------------------+------------+
+| Parameter : num + label      |   Format   |
++==============================+============+
+| 1 : Data matrix              |   tabular  |
++------------------------------+------------+
+| 2 : [opt] Variables metadata |   tabular  |
++------------------------------+------------+
+
+Variables metadata files are optional.
+If a file is provided, output metadata will be appended to the input file, otherwise a new output file will be created.
+
+Global input files:
+===================
+
++-----------------------------+------------+
+| Parameter : num + label     |   Format   |
++=============================+============+
+| 1 : Samples metadata        |   tabular  |
++-----------------------------+------------+
+
+By default, the last column of the samples metadata matrix will be used as samples description factors.
+If it's not the case, the column number can be inputed in the `Sample description column number` parameter.
+
+----------
+Parameters
+----------
+
+For each block (min 2 blocks):
+==============================
+
+Block name
+    Name of the block. If not provided, this will default to the input filename
+
+Number of variables to select for each component
+    If set to 0 (default), all variables will be considered in the model
+
+Global parameters:
+==================
+
+Sample description column number
+
+Number of components to include in the model
+
+Correlation between all blocks
+
+Advanced options:
+=================
+
+Scheme
+
+Mode
+
+Maximum number of iterations
+
+Scale
+
+Init
+
+Convergence stopping value (tol)
+
+Near zero var
+
+------------
+Output files
+------------
+
+mixomics_blocksplsda_output.rdata
+    | rData output
+    | Contains the `mixomics_result` R object containing the result of the block.splsda function
+
+mixomics_blocksplsda_{input_sample_metadata_name}
+    | tabular output
+    | Identical to the input Sample metadata file with appended columns from the result of block.splsda function
+
+mixomics_blocksplsda_blocks_output
+    A collection with the variable metadata output files (mixomics_blocksplsda_block_{block name}_variable_metadata) for each input block
+
         ]]>
     </help>
 
