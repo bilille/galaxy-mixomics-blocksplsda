@@ -62,6 +62,25 @@ print(args$variable_metadata_outdir)
 ## Loading libraries
 suppressPackageStartupMessages(require(mixOmics))
 
+## Read sample metadata file and set description factor matrix
+sample_metadata <- read.table(args$sample_metadata_in, sep='\t', header=TRUE, row.names=1)
+sample_metadata_names <- row.names(sample_metadata)
+# print(sample_metadata_names)
+
+# print("Sample metadata matrix:")
+# print(head(sample_metadata))
+
+description_column <- ncol(sample_metadata)
+if(args$sample_description_col > 0)
+{
+    description_column <- args$sample_description_col
+}
+
+Y <- factor(sample_metadata[[description_column]])
+
+print("Y factor matrix:")
+print(Y)
+
 ## Read and prepare block datasets
 list_X <- c()
 keepX <- c()
@@ -71,11 +90,22 @@ for(i in 1:nrow(args$blocks_list))
     # Read block input parameters
     block_name <- args$blocks_list[i,1]
     block_keep <- strtoi(args$blocks_list[i,2])
-    block_data_matrix <- args$blocks_list[i,3]
+    block_data_matrix_filename <- args$blocks_list[i,3]
     # block_meta_var <- args$blocks_list[i,4]
 
+    print(sprintf("Processing block %s", block_name))
+
     # Store block data matrices
-    list_X[[block_name]] <- t(read.table(block_data_matrix, sep='\t', header=TRUE, row.names=1)) # transpose the matrix so that the samples become rows and the variables become columns
+    block_data_matrix <- t(read.table(block_data_matrix_filename, sep='\t', header=TRUE, row.names=1)) # transpose the matrix so that the samples become rows and the variables become columns
+    block_data_matrix_names <- row.names(block_data_matrix)
+    # print(block_data_matrix_names)
+
+    if(sample_metadata_names != block_data_matrix_names)
+    {
+        stop("Sample names must be the same and in the same order in the sample metadata matrix and the block data matrix")
+    }
+
+    list_X[[block_name]] <- block_data_matrix
 
     # Set the nb of variables to keep
     nb_variables = ncol(list_X[[block_name]])
@@ -91,23 +121,6 @@ for(i in 1:nrow(args$blocks_list))
 }
 
 # print(list_X)
-
-## Read sample metadata file and set description factor matrix
-sample_metadata <- read.table(args$sample_metadata_in, sep='\t', header=TRUE, row.names=1)
-
-# print("Sample metadata matrix:")
-# print(head(sample_metadata))
-
-description_column <- ncol(sample_metadata)
-if(args$sample_description_col > 0)
-{
-    description_column <- args$sample_description_col
-}
-
-Y <- factor(sample_metadata[[description_column]])
-
-print("Y factor matrix:")
-print(Y)
 
 ## Generate design matrix
 block_nb <- nrow(args$blocks_list)
@@ -177,7 +190,7 @@ for(i in 1:nrow(args$blocks_list))
     # Read again block input parameters
     block_name <- args$blocks_list[i,1]
     # block_keep <- strtoi(args$blocks_list[i,2])
-    # block_data_matrix <- args$blocks_list[i,3]
+    # block_data_matrix_filename <- args$blocks_list[i,3]
     block_meta_var <- args$blocks_list[i,4]
 
     meta_variable <- res_block_splsda$loadings[[block_name]]
