@@ -36,15 +36,15 @@ load(args$input_rdata)
 
 pdf(args$output_pdf)
 
-plotIndiv(res_block_splsda,
+plotIndiv(mixomics_result,
           legend = args$legend,
           ellipse = args$ellipse)
 
-for(k in 1:(length(res_block_splsda$names[[3]])-1))
+for(k in 1:(length(mixomics_result$names[[3]])-1))
 {
-    name_block = res_block_splsda$names[[3]][k]
+    name_block = mixomics_result$names[[3]][k]
 
-    plotIndiv(res_block_splsda,
+    plotIndiv(mixomics_result,
               blocks = k,
               legend = args$legend,
               ellipse = args$ellipse)

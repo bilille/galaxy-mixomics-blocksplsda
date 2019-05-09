@@ -140,7 +140,7 @@ if(args$correlation)
 ## Main function ##
 ###################
 
-res_block_splsda <- block.splsda(X = list_X,
+mixomics_result <- block.splsda(X = list_X,
                                  Y = Y,
                                  ncomp = args$ncomp,
                                  keepX = keepX,
@@ -155,26 +155,26 @@ res_block_splsda <- block.splsda(X = list_X,
                                  all.outputs = TRUE)
 
 print("Block.splsda object:")
-print(res_block_splsda)
+print(mixomics_result)
 
 ## Save output Rdata file
-save(res_block_splsda, file=args$rdata_out)
+save(mixomics_result, file=args$rdata_out)
 
 ## Save output sample metadata file
 # print("Block.splsda variates:")
-# print(res_block_splsda$variates)
+# print(mixomics_result$variates)
 
-for(bname in names(res_block_splsda$variates))
+for(bname in names(mixomics_result$variates))
 {
     # print(bname)
-    # print(res_block_splsda$variates[[bname]])
+    # print(mixomics_result$variates[[bname]])
 
     # Format the column names to add the block name and replace spaces
-    colnames(res_block_splsda$variates[[bname]]) <- paste("block.splsda", bname, gsub(" ", "_", colnames(res_block_splsda$variates[[bname]])), sep = "_")
-    # print(res_block_splsda$variates[[bname]])
+    colnames(mixomics_result$variates[[bname]]) <- paste("block.splsda", bname, gsub(" ", "_", colnames(mixomics_result$variates[[bname]])), sep = "_")
+    # print(mixomics_result$variates[[bname]])
 
     # Append the new columns to the sample metadata matrix
-    sample_metadata <- cbind2(sample_metadata, res_block_splsda$variates[[bname]])
+    sample_metadata <- cbind2(sample_metadata, mixomics_result$variates[[bname]])
 }
 
 # print(sample_metadata)
@@ -183,7 +183,7 @@ write.table(sample_metadata, file = args$sample_metadata_out, quote = TRUE, sep 
 
 ## Save output variable metadata files in output directory
 # print("Block.splsda loadings:")
-# print(res_block_splsda$loadings)
+# print(mixomics_result$loadings)
 
 for(i in 1:nrow(args$blocks_list))
 {
@@ -193,7 +193,7 @@ for(i in 1:nrow(args$blocks_list))
     # block_data_matrix_filename <- args$blocks_list[i,3]
     block_meta_var <- args$blocks_list[i,4]
 
-    meta_variable <- res_block_splsda$loadings[[block_name]]
+    meta_variable <- mixomics_result$loadings[[block_name]]
     # print(head(meta_variable))
 
     # Read input block variable metadata files if provided (optional)
