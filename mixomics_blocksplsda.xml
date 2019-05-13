@@ -4,7 +4,7 @@
     
     <requirements>
         <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
-        <requirement type="package" version="2">r-argparse</requirement>
+        <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
     
 <!--     <stdio>
@@ -21,7 +21,7 @@
             #if $b.block_name
                 ${b.block_name}
             #else
-                ${b.block.name}
+                ${b.data_matrix.name}
             #end if
             ${b.keep}
             ${b.data_matrix}
@@ -86,23 +86,20 @@
         </collection>
     </outputs>
 
-<!--     <tests>
+    <tests>
         <test>
             <repeat name="block_1">
                 <param name="block_name" value="Block1" />
-                <param name="keep" value="3" />
-                <param name="data_matrix" value="block_1_data_matrix.tsv" />
-                <param name="variable_metadata" value="block_1_meta_var.tsv" />
+                <param name="data_matrix" value="in_block1_data.tabular" />
             </repeat>
             <repeat name="block_2">
                 <param name="block_name" value="Block2" />
-                <param name="keep" value="3" />
-                <param name="data_matrix" value="block_2_data_matrix.tsv" />
-                <param name="variable_metadata" value="block_2_meta_var.tsv" />
+                <param name="data_matrix" value="in_block2_data.tabular" />
             </repeat>
-            <param name="sample_metadata_in" value="sample_meta.tsv" />
+            <param name="sample_metadata_in" value="in_sample_meta.tabular" />
+            <output name="sample_metadata_out" value="out_sample_meta_tabular" />
         </test>
-    </tests> -->
+    </tests>
 
     <help>
         <![CDATA[
