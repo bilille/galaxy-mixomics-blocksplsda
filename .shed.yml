@@ -1,0 +1,7 @@
+categories: [Statistics]
+name: mixomics_blocksplsda
+owner: ppericard
+description: '[Statistics] mixOmics R Package - block.splsda'
+long_description: Performs N-integration and feature selection with Projection to
+  Latent Structures models (PLS) with sparse Discriminant Analysis
+remote_repository_url: https://github.com/bilille/galaxy-mixomics-blocksplsda
