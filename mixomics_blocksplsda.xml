@@ -88,16 +88,17 @@
 
     <tests>
         <test>
-            <repeat name="block_1">
+            <repeat name="blocks">
                 <param name="block_name" value="Block1" />
                 <param name="data_matrix" value="in_block1_data.tabular" />
             </repeat>
-            <repeat name="block_2">
+            <repeat name="blocks">
                 <param name="block_name" value="Block2" />
                 <param name="data_matrix" value="in_block2_data.tabular" />
             </repeat>
             <param name="sample_metadata_in" value="in_sample_meta.tabular" />
-            <output name="sample_metadata_out" value="out_sample_meta_tabular" />
+            <output name="rdata_out" value="out_rdata.rdata" />
+            <output name="sample_metadata_out" value="out_sample_meta.tabular" />
         </test>
     </tests>
 
