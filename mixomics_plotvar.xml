@@ -26,7 +26,7 @@
         <param name="input_rdata" type="data" format="rdata" label="Input RData file from (sparse)(I)PCA, (regularized)CCA, (sparse)PLS(DA) or (sparse)(R)GCCA(DA)"/>
         <section name="adv" title="Advanced Options" expanded="false">
             <param name="legend" type="boolean" checked="true" truevalue="--legend" falsevalue="" label="Plot legend"/>
-            <param name="cutoff" type="float" value="0.85" min="0" max="1" label="Cut-off (0..1)" />
+            <param name="cutoff" type="float" value="0.85" min="0" max="1" label="Cut-off" />
         </section>
     </inputs>
 
@@ -35,11 +35,70 @@
     </outputs>
 
     <tests>
+        <test>
+            <param name="input_rdata" value="out_rdata.rdata" />
+            <output name="output_pdf" value="out_plotVar.pdf" />
+        </test>
     </tests>
 
-    <help><![CDATA[
-        TODO: Fill in help.
-    ]]></help>
+    <help>
+        <![CDATA[
+.. class:: infomark
+
+**Authors** Pierre Pericard (pierre.pericard@pasteur-lille.fr)
+
+---------------------------------------------------
+
+.. class:: infomark
+
+**Please cite**
+
+Rohart F, Gautier B, Singh A, Lê Cao KA (2017) mixOmics: An R package for ‘omics feature selection and multiple data integration.
+PLOS Computational Biology 13(11): e1005752. https://doi.org/10.1371/journal.pcbi.1005752
+
+---------------------------------------------------
+
+================
+mixOmics plotVar
+================
+
+-----------
+Description
+-----------
+
+The plotVar function is part of the mixOmics package for exploration and integration of Omics datasets.
+Provides variables representation for (regularized) CCA, (sparse) PLS regression, PCA and (sparse) Regularized generalised CCA.
+
+-----------
+Input files
+-----------
+
++-------------------------------+------------+
+| Parameter : num + label       |   Format   |
++===============================+============+
+| 1 : Rdata block.splsda output |   Rdata    |
++-------------------------------+------------+
+
+----------
+Parameters
+----------
+
+Advanced options:
+=================
+
+Plot legend
+
+Cut-off
+
+------------
+Output files
+------------
+
+plotIndiv.pdf
+    A pdf file with scatter plots for individuals
+
+        ]]>
+    </help>
 
     <citations>
         <citation type="doi">10.1371/journal.pcbi.1005752</citation>

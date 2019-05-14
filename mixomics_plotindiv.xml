@@ -35,11 +35,70 @@
     </outputs>
 
     <tests>
+        <test>
+            <param name="input_rdata" value="out_rdata.rdata" />
+            <output name="output_pdf" value="out_plotIndiv.pdf" />
+        </test>
     </tests>
 
-    <help><![CDATA[
-        TODO: Fill in help.
-    ]]></help>
+    <help>
+        <![CDATA[
+.. class:: infomark
+
+**Authors** Pierre Pericard (pierre.pericard@pasteur-lille.fr)
+
+---------------------------------------------------
+
+.. class:: infomark
+
+**Please cite**
+
+Rohart F, Gautier B, Singh A, Lê Cao KA (2017) mixOmics: An R package for ‘omics feature selection and multiple data integration.
+PLOS Computational Biology 13(11): e1005752. https://doi.org/10.1371/journal.pcbi.1005752
+
+---------------------------------------------------
+
+==================
+mixOmics plotIndiv
+==================
+
+-----------
+Description
+-----------
+
+The plotIndiv function is part of the mixOmics package for exploration and integration of Omics datasets.
+Provides scatter plots for individuals (experimental units) representation in (sparse)(I)PCA,(regularized)CCA, (sparse)PLS(DA) and (sparse)(R)GCCA(DA).
+
+-----------
+Input files
+-----------
+
++-------------------------------+------------+
+| Parameter : num + label       |   Format   |
++===============================+============+
+| 1 : Rdata block.splsda output |   Rdata    |
++-------------------------------+------------+
+
+----------
+Parameters
+----------
+
+Advanced options:
+=================
+
+Plot legend
+
+Plot ellipse plots
+
+------------
+Output files
+------------
+
+plotIndiv.pdf
+    A pdf file with scatter plots for individuals
+
+        ]]>
+    </help>
 
     <citations>
         <citation type="doi">10.1371/journal.pcbi.1005752</citation>
