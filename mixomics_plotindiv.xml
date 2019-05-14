@@ -3,8 +3,8 @@
     <description>provides scatter plots for individuals (experimental units) representation in (sparse)(I)PCA,(regularized)CCA, (sparse)PLS(DA) and (sparse)(R)GCCA(DA)</description>
     
     <requirements>
-        <requirement type="package" version="6">bioconductor-mixomics</requirement>
-        <requirement type="package" version="2">r-argparse</requirement>
+        <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
+        <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
     
     <stdio>

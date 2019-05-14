@@ -3,8 +3,8 @@
     <description>provides variables representation for (regularized) CCA, (sparse) PLS regression, PCA and (sparse) Regularized generalised CCA</description>
     
     <requirements>
-        <requirement type="package" version="6">bioconductor-mixomics</requirement>
-        <requirement type="package" version="2">r-argparse</requirement>
+        <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
+        <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
     
     <stdio>
