@@ -100,7 +100,7 @@ for(i in 1:nrow(args$blocks_list))
     block_data_matrix_names <- row.names(block_data_matrix)
     # print(block_data_matrix_names)
 
-    if(sample_metadata_names != block_data_matrix_names)
+    if(!identical(sample_metadata_names, block_data_matrix_names))
     {
         stop("Sample names must be the same and in the same order in the sample metadata matrix and the block data matrix")
     }
