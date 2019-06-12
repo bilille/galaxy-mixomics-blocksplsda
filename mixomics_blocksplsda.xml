@@ -1,4 +1,4 @@
-<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.1.0" profile="16.04" workflow_compatible="true">
+<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.2.0" profile="16.04" workflow_compatible="true">
 
     <description>performs N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis</description>
     
@@ -148,6 +148,16 @@ For each block (min 2 blocks):
 Variables metadata files are optional.
 If a file is provided, output metadata will be appended to the input file, otherwise a new output file will be created.
 
+1. Data matrix format
+    * Rows = variables, Columns = samples
+    * First row = samples name. MUST be the same and in the same order in every block as well as in the sample metadata file (transposed)
+    * First column = variables name
+
+2. Variables metadata format
+    * Rows = variables, Columns = metadata
+    * First row = metadata column names
+    * First column = variables names. MUST be the same and in the same order than in the associated data matrix
+
 Global input files:
 ===================
 
@@ -159,6 +169,11 @@ Global input files:
 
 By default, the last column of the samples metadata matrix will be used as samples description factors.
 If it's not the case, the column number can be inputed in the `Sample description column number` parameter.
+
+1. Samples metadata format
+    * Rows = samples, Columns = metadata
+    * First row = metadata column names
+    * First column = sample names. These names must be identical (transposed) and in the same order than for the blocks data matrices
 
 ----------
 Parameters
