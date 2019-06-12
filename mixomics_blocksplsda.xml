@@ -79,9 +79,9 @@
     </inputs>
 
     <outputs>
-        <data name="rdata_out" format="rdata" label="${tool.id}_output.rdata" />
-        <data name="sample_metadata_out" format="tabular" label="${tool.id}_${sample_metadata_in.name}" />
-        <collection name="blocks_output" type="list" label="${tool.id}_blocks_output">
+        <data name="rdata_out" format="rdata" label="${tool.name}_output.rdata" />
+        <data name="sample_metadata_out" format="tabular" label="${tool.name}_${sample_metadata_in.name}" />
+        <collection name="blocks_output" type="list" label="${tool.name}_blocks_output">
             <discover_datasets pattern="(?P&lt;designation&gt;.+)\.tsv" directory="outdir" format="tabular" />
         </collection>
     </outputs>
