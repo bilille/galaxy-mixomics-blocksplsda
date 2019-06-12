@@ -26,7 +26,7 @@
         <param name="input_rdata" type="data" format="rdata" label="Input RData file from (sparse)(I)PCA, (regularized)CCA, (sparse)PLS(DA) or (sparse)(R)GCCA(DA)"/>
         <section name="adv" title="Advanced Options" expanded="false">
             <param name="legend" type="boolean" checked="true" truevalue="--legend" falsevalue="" label="Plot legend"/>
-            <param name="cutoff" type="float" value="0.85" min="0" max="1" label="Cut-off" />
+            <param name="cutoff" type="float" value="0" min="0" max="1" label="Cut-off" />
         </section>
     </inputs>
 
