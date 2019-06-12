@@ -164,17 +164,17 @@ save(mixomics_result, file=args$rdata_out)
 # print("Block.splsda variates:")
 # print(mixomics_result$variates)
 
-for(bname in names(mixomics_result$variates))
+for(block_name in names(mixomics_result$variates))
 {
-    # print(bname)
-    # print(mixomics_result$variates[[bname]])
+    # print(block_name)
+    # print(mixomics_result$variates[[block_name]])
 
     # Format the column names to add the block name and replace spaces
-    colnames(mixomics_result$variates[[bname]]) <- paste("block.splsda", bname, gsub(" ", "_", colnames(mixomics_result$variates[[bname]])), sep = "_")
-    # print(mixomics_result$variates[[bname]])
+    colnames(mixomics_result$variates[[block_name]]) <- paste("block.splsda_variates", block_name, gsub(" ", "_", colnames(mixomics_result$variates[[block_name]])), sep = "_")
+    # print(mixomics_result$variates[[block_name]])
 
     # Append the new columns to the sample metadata matrix
-    sample_metadata <- cbind2(sample_metadata, mixomics_result$variates[[bname]])
+    sample_metadata <- cbind2(sample_metadata, mixomics_result$variates[[block_name]])
 }
 
 # print(sample_metadata)
@@ -195,6 +195,9 @@ for(i in 1:nrow(args$blocks_list))
 
     meta_variable <- mixomics_result$loadings[[block_name]]
     # print(head(meta_variable))
+
+    # Format the column names to add the block name and replace spaces
+    colnames(meta_variable) <- paste("block.splsda_loadings", gsub(" ", "_", colnames(meta_variable)), sep = "_")
 
     # Read input block variable metadata files if provided (optional)
     if(block_meta_var != "None")
