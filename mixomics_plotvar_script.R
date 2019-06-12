@@ -36,9 +36,9 @@ load(args$input_rdata)
 
 pdf(args$output_pdf)
 
-plotVar(mixomics_result,
-        legend = args$legend,
-        cutoff = args$cutoff)
+# plotVar(mixomics_result,
+#         legend = args$legend,
+#         cutoff = args$cutoff)
 
 for(k in 1:(length(mixomics_result$names[[3]])-1))
 {
