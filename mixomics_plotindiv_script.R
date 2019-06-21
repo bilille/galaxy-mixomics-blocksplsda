@@ -36,9 +36,9 @@ load(args$input_rdata)
 
 pdf(args$output_pdf)
 
-plotIndiv(mixomics_result,
-          legend = args$legend,
-          ellipse = args$ellipse)
+# plotIndiv(mixomics_result,
+#           legend = args$legend,
+#           ellipse = args$ellipse)
 
 for(k in 1:(length(mixomics_result$names[[3]])-1))
 {
