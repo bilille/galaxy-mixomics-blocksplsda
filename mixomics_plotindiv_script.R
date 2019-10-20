@@ -6,8 +6,7 @@ options( show.error.messages=F, error = function () { cat( geterrmessage(), file
 # we need that to not crash galaxy with an UTF8 error on German LC settings.
 loc <- Sys.setlocale("LC_MESSAGES", "en_US.UTF-8")
 
-## Main Function ##
-
+## Get parameters ##
 suppressPackageStartupMessages(require(argparse))
 
 parser <- ArgumentParser(description='Run the mixOmics plotIndiv function')
@@ -19,7 +18,7 @@ parser$add_argument('--output_pdf', dest='output_pdf', required=TRUE, help="Outp
 
 args <- parser$parse_args()
 
-##
+## Print parameters
 print("Input RData:")
 print(args$input_rdata)
 print("Plot legend:")

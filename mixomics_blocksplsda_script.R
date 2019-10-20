@@ -193,6 +193,8 @@ for(i in 1:nrow(args$blocks_list))
     # block_data_matrix_filename <- args$blocks_list[i,3]
     block_meta_var <- args$blocks_list[i,4]
 
+    print(sprintf("Saving block %s output metavar", block_name))
+
     meta_variable <- mixomics_result$loadings[[block_name]]
     # print(head(meta_variable))
 
