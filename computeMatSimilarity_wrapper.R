@@ -23,7 +23,7 @@ print("Output RData:")
 print(args$output_rdata)
 
 ## Loading libraries
-suppressPackageStartupMessages(require(mixOmics))
+# suppressPackageStartupMessages(require(mixOmics))
 
 # R script call
 source_local <- function(fname)

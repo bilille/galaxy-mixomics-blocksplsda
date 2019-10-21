@@ -44,7 +44,11 @@ print("Output PDF file:")
 print(args$output_pdf)
 
 ## Loading libraries
-suppressPackageStartupMessages(require(mixOmics))
+suppressPackageStartupMessages(require(ellipse))
+suppressPackageStartupMessages(require(grDevices))
+suppressPackageStartupMessages(require(RColorBrewer))
+# suppressPackageStartupMessages(require(mixOmics))
+
 
 # R script call
 source_local <- function(fname)
@@ -58,10 +62,22 @@ source_local("Integration_block_splsda_fonc.R")
 
 load(args$input_rdata)
 
-blocks_vector = strsplit(args$blocks_vec, ",")
-response_variables = strsplit(args$responses_var, ",")
+blocks_vector = strsplit(args$blocks_vec, ",")[[1]]
+response_variables = strsplit(args$responses_var, ",")[[1]]
 
-pdf(args$output_pdf)
+
+print("liste_vec_indice_blockSelect:")
+print(liste_vec_indice_blockSelect)
+print("liste_vec_blocks:")
+print(liste_vec_blocks)
+print("Mat cor comp1:")
+print(mat_cor_comp1)
+print("blocks_vector:")
+print(blocks_vector)
+
+
+
+pdf(args$output_pdf, width=12, height=9)
 
 varSelect = circleCor(liste_dataframe_cor_comp_var_global = liste_dataframe_cor_comp_var_global,
                       liste_vec_indice_blockSelect = liste_vec_indice_blockSelect,

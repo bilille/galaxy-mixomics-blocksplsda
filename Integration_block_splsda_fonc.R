@@ -2728,7 +2728,7 @@ circleCor <-function(liste_dataframe_cor_comp_var_global,
   
   if(!boolean)
   {
-    cat(paste0("Erreur : les blocs : ", paste(vec_blocks, collapse = ", "), " ne peuvent pas être superposés.", "\n"))
+    stop(paste0("The blocks : ", paste(vec_blocks, collapse = ", "), " can not be superimposed."))
     
   }else{
     # On récupère le groupe de blocs auxquels appartient vec_blocks.
@@ -2748,8 +2748,8 @@ circleCor <-function(liste_dataframe_cor_comp_var_global,
     
     if(!indice_nomsVarReponses)
     {
-      cat("Toutes les corrélations entre les variables réponses et la première composante et les 
-          variables réponses et la deuxième composante n'ont pas été calculées", "\n")
+      stop("All the correlations between the response variables and the first component and the correlations 
+            between the responses variables and the second component have not been computed.")
       
     }else{
       comp = as.numeric(sapply(3:4, FUN = function(i){
@@ -2953,7 +2953,7 @@ circleCor <-function(liste_dataframe_cor_comp_var_global,
         
         
       }else{
-        cat("Il n'y a de variables dans ce rectangle du cercle de corrélations.", "\n")
+        warning("There is no variables in this rectangle of the correlation circle.")
         
       }
       
@@ -3300,6 +3300,29 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
                       cutoff = 0
 )
 {
+  if(!is.null(vec_varBlockInteret))
+  {
+    Var_AllBlock_list = sapply(1:(length(res_block_splsda$names$blocks) - 1), FUN = function(i){
+      res = colnames(res_block_splsda$X[[i]])
+      
+      return(res)
+    })
+    Var_AllBlock_vec = unlist(Var_AllBlock_list)
+    
+    isInterestVariableInVar_AllBlock_vec = vec_varBlockInteret%in%Var_AllBlock_vec
+    
+    if(length(which(isInterestVariableInVar_AllBlock_vec == FALSE)) != 0)
+    {
+      stop(paste0("The variables of interest ", paste(vec_varBlockInteret[which(isInterestVariableInVar_AllBlock_vec == FALSE)], collapse = ","), " are not
+                   variables of a block."))
+      
+    }
+    
+  }
+  
+
+  
+  
   
   
   if(!is.null(vec_varBlock) & !is.null(vec_varBlockInteret))
@@ -3368,8 +3391,8 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
   
   if(length(which(indice_group_vecVar == TRUE)) >= 2)
   {
-    cat("Erreur : les variables de vec_var doivent appartenir à un seul élément de la liste
-        liste_res_matSimilarity_group$liste_matSimilarity_group.", "\n")
+    stop("The variables of vec_var have to belong to only one element of
+          liste_res_matSimilarity_group$liste_matSimilarity_group.")
     
   }else{
     liste_matSimilarity = liste_matSimilarity_group[[which(indice_group_vecVar == TRUE)]]
@@ -3435,9 +3458,9 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
     
     if(!boolean_pos_cor)
     {
-      cat("Erreur : pour chaque paire de bloc, la ième composante du premier bloc
-          et la ième composante du deuxième bloc doivent être corrélées positivement afin de pouvoir créer 
-          un réseau.", "\n")
+      stop("For each pair of blocks, the ith component of the first block
+            and the ith component of the second block have to be positively correlated in order
+            to create a network.")
       
     }else{
       liste_matSimilaritySelectTemp = lapply(1:length(liste_matSimilarity), FUN = function(j){

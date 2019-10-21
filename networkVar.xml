@@ -4,6 +4,7 @@
     
     <requirements>
         <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
+        <requirement type="package" version="1.2">r-igraph</requirement>
         <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
     
@@ -19,7 +20,10 @@
         --block_splsda_rdata ${block_splsda_rdata}
         --var_list_file ${var_list_file}
 
-        --blocks_vec ${select_blocks.value}
+        #if str($var_of_interest_file) !='':
+            --interest_var_file ${var_of_interest_file}
+        #end if
+        
         --responses_var ${select_responses_var}
 
         --output_graph ${output_graph}
@@ -30,14 +34,10 @@
         <param name="mat_similarity_rdata" type="data" format="rdata" label="Input RData file from computeMatSimilarity"/>
         <param name="block_splsda_rdata" type="data" format="rdata" label="Input RData file from block.SPLSDA"/>
         <param name="var_list_file" type="data" format="tabular" label="Variables list file" />
-        <param name="blocks_vec_list" type="data" format="tabular" label="List of blocks vector"/>
-        <param name="select_blocks" type="select" label="Blocks">
-            <options from_dataset="blocks_vec_list">
-                <column name="value" index="0"/>
-                <filter type="unique_value" column="0"/>
-                <filter type="sort_by" name="sorted_value" column="0"/>
-            </options>
-        </param>
+        
+        <!-- Fichier avec noms de gènes/variables, donné par l'utilisateur -->
+        <param name="var_of_interest_file" type="data" format="tabular" optional="true" label="Variables of interest (Optional)" />
+
         <param name="responses_var_list" type="data" format="tabular" label="List of response variables"/>
         <param name="select_responses_var" type="select" display="checkboxes" multiple="true" label="Response variables">
         <!-- <param name="select_responses_var" type="select" multiple="true" label="Response variables"> -->

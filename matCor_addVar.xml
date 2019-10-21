@@ -25,7 +25,7 @@
 
     <inputs>
         <param name="input_rdata" type="data" format="rdata" label="Input RData file from block.SPLSDA"/>
-        <param name="cutoff_comp" type="float" value="0.8" min="0" max="1" label="Sample description column number" help="Use the last column by default" />
+        <param name="cutoff_comp" type="float" value="0.8" min="0" max="1" label="" help="" />
         <param name="mat_block_Y" type="data" format="tabular" label="Matrix Block Y" />
     </inputs>
 

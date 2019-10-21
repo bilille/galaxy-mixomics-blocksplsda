@@ -3,7 +3,7 @@
     <description></description>
     
     <requirements>
-        <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
+        <!-- <requirement type="package" version="6.8">bioconductor-mixomics</requirement> -->
         <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
     
