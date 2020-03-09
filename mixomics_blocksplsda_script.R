@@ -141,18 +141,18 @@ if(args$correlation)
 ###################
 
 mixomics_result <- block.splsda(X = list_X,
-                                 Y = Y,
-                                 ncomp = args$ncomp,
-                                 keepX = keepX,
-                                 design = design,
-                                 scheme = args$scheme,
-                                 mode = args$mode,
-                                 scale = args$scale,
-                                 init = args$init,
-                                 tol = args$tol,
-                                 max.iter = args$maxiter,
-                                 near.zero.var = args$nearzerovar,
-                                 all.outputs = TRUE)
+                                Y = Y,
+                                ncomp = args$ncomp,
+                                keepX = keepX,
+                                design = design,
+                                scheme = args$scheme,
+                                mode = args$mode,
+                                scale = args$scale,
+                                init = args$init,
+                                tol = args$tol,
+                                max.iter = args$maxiter,
+                                near.zero.var = args$nearzerovar,
+                                all.outputs = TRUE)
 
 print("Block.splsda object:")
 print(mixomics_result)

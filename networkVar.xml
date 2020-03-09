@@ -1,13 +1,13 @@
-<tool id="networkVar" name="networkVar" version="0.2.0" profile="16.04" workflow_compatible="true">
+<tool id="networkVar" name="networkVar" version="0.3.0" profile="16.04" workflow_compatible="true">
 
-    <description></description>
-    
+    <description>creates a network between selected variables of datasets and the response variables. In the network, the similarity between two variables is associated with the link between these two variables.</description>
+
     <requirements>
         <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
         <requirement type="package" version="1.2">r-igraph</requirement>
         <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
-    
+
     <stdio>
         <!-- <exit_code range="1:" level="fatal" /> -->
     </stdio>
@@ -23,7 +23,7 @@
         #if str($var_of_interest_file) !='':
             --interest_var_file ${var_of_interest_file}
         #end if
-        
+
         --responses_var ${select_responses_var}
 
         --output_graph ${output_graph}
@@ -31,15 +31,26 @@
     </command>
 
     <inputs>
-        <param name="mat_similarity_rdata" type="data" format="rdata" label="Input RData file from computeMatSimilarity"/>
-        <param name="block_splsda_rdata" type="data" format="rdata" label="Input RData file from block.SPLSDA"/>
-        <param name="var_list_file" type="data" format="tabular" label="Variables list file" />
-        
-        <!-- Fichier avec noms de gènes/variables, donné par l'utilisateur -->
-        <param name="var_of_interest_file" type="data" format="tabular" optional="true" label="Variables of interest (Optional)" />
+        <param name="mat_similarity_rdata" type="data" format="rdata"
+               label="Input computeMatSimilarity RData file"
+               help="output RData file from computeMatSimilarity"/>
+        <param name="block_splsda_rdata" type="data" format="rdata"
+               label="Input block.SPLSDA RData file"
+               help="output Rdata file from block.SPLSDA"/>
+        <param name="var_list_file" type="data" format="tabular"
+               label="Variables list file"
+               help="output tabular file from circleCor"/>
 
-        <param name="responses_var_list" type="data" format="tabular" label="List of response variables"/>
-        <param name="select_responses_var" type="select" display="checkboxes" multiple="true" label="Response variables">
+        <!-- Fichier avec noms de gènes/variables, donné par l'utilisateur -->
+        <param name="var_of_interest_file" type="data" format="tabular" optional="true"
+               label="Variables of interest (Optional)"
+               help="these variables have to belong to datasets that can be superimposed"/>
+
+        <param name="responses_var_list" type="data" format="txt"
+               label="List of response variables"
+               help="list of the response variables that will be in the network"/>
+        <param name="select_responses_var" type="select" display="checkboxes" multiple="true"
+               label="Response variables">
         <!-- <param name="select_responses_var" type="select" multiple="true" label="Response variables"> -->
             <options from_dataset="responses_var_list">
                 <column name="value" index="0"/>

@@ -3300,60 +3300,6 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
                       cutoff = 0
 )
 {
-  if(!is.null(vec_varBlockInteret))
-  {
-    Var_AllBlock_list = sapply(1:(length(res_block_splsda$names$blocks) - 1), FUN = function(i){
-      res = colnames(res_block_splsda$X[[i]])
-      
-      return(res)
-    })
-    Var_AllBlock_vec = unlist(Var_AllBlock_list)
-    
-    isInterestVariableInVar_AllBlock_vec = vec_varBlockInteret%in%Var_AllBlock_vec
-    
-    if(length(which(isInterestVariableInVar_AllBlock_vec == FALSE)) != 0)
-    {
-      stop(paste0("The variables of interest ", paste(vec_varBlockInteret[which(isInterestVariableInVar_AllBlock_vec == FALSE)], collapse = ","), " are not
-                   variables of a block."))
-      
-    }
-    
-  }
-  
-
-  
-  
-  
-  
-  if(!is.null(vec_varBlock) & !is.null(vec_varBlockInteret))
-  {
-    indice_varCom = which(vec_varBlock%in%vec_varBlockInteret == TRUE)
-    
-    if(length(indice_varCom) != 0)
-    {
-      vec_varBlock2 = vec_varBlock[- indice_varCom]
-      
-    }else{
-      vec_varBlock2 = vec_varBlock
-      
-    }
-    
-    vec_varBlock3 = c(vec_varBlock2, vec_varBlockInteret)
-    
-  }else if(!is.null(vec_varBlock) & is.null(vec_varBlockInteret))
-  {
-    vec_varBlock3 = vec_varBlock
-    
-  }else if(is.null(vec_varBlock) & !is.null(vec_varBlockInteret))
-  {
-    vec_varBlock3 = vec_varBlockInteret
-    
-  }
-  
-  vec_var = c(vec_varBlock3, vec_varRep)
-  
-  
-  
   # Nous vérifions que nous pouvons créer un réseau pour les variables des 
   # blocs vec_VarBlock.
   
@@ -3372,7 +3318,7 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
       
       vec_var_block1_block2 = c(vec_var_block1, vec_var_block2)
       
-      if(any(vec_var_block1_block2%in%vec_varBlock3))
+      if(any(vec_var_block1_block2%in%vec_varBlock))
       {
         boolean = TRUE
         
@@ -3387,7 +3333,6 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
     return(res)
   }) 
   
-  res = NULL
   
   if(length(which(indice_group_vecVar == TRUE)) >= 2)
   {
@@ -3396,6 +3341,70 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
     
   }else{
     liste_matSimilarity = liste_matSimilarity_group[[which(indice_group_vecVar == TRUE)]]
+    
+    if(!is.null(vec_varBlockInteret))
+    {
+      AllVariables_vec = sapply(1:length(liste_matSimilarity), FUN = function(i){
+        matSimilarity_i  = liste_matSimilarity[[i]]
+        res = c(rownames(matSimilarity_i), colnames(matSimilarity_i))
+        
+        return(res)
+      })
+      AllVariables_vec = unique(unlist(AllVariables_vec))
+      
+      index_variableInterestNotInAllVariables_vec = vec_varBlockInteret%in%AllVariables_vec
+      
+      if(length(which(index_variableInterestNotInAllVariables_vec == FALSE)) != 0)
+      {
+        InterestVariableNotIn = vec_varBlockInteret[which(index_variableInterestNotInAllVariables_vec == FALSE)]
+        
+        warning(paste0("The variables of interest ", paste(InterestVariableNotIn, collapse = ","), " do not belong
+                        to the variables of the blocks for which the network can be created. These variables will
+                        be not in the network."))
+      }
+      
+      vec_varBlockInteret2 = vec_varBlockInteret[which(index_variableInterestNotInAllVariables_vec == TRUE)]
+      
+      
+    }else{
+      vec_varBlockInteret2 = vec_varBlockInteret
+      
+    }
+    
+    
+    if(!is.null(vec_varBlock) & !is.null(vec_varBlockInteret2))
+    {
+      varCom = intersect(vec_varBlock, vec_varBlockInteret2)
+
+      if(length(varCom) != 0)
+      {
+        index_varCom = sapply(1:length(varCom), FUN = function(i){
+          res = which(vec_varBlock == varCom[i])
+          
+          return(res)
+        })
+        vec_varBlock2 = vec_varBlock[- index_varCom]
+        
+      }else{
+        vec_varBlock2 = vec_varBlock
+        
+      }
+      
+      vec_varBlock3 = c(vec_varBlock2, vec_varBlockInteret2)
+      
+    }else if(!is.null(vec_varBlock) & is.null(vec_varBlockInteret2))
+    {
+      vec_varBlock3 = vec_varBlock
+      
+    }else if(is.null(vec_varBlock) & !is.null(vec_varBlockInteret2))
+    {
+      vec_varBlock3 = vec_varBlockInteret2
+      
+    }
+    
+    vec_var = c(vec_varBlock3, vec_varRep)
+    
+    
     
     blocks_liste_matSimilarityTemp1 = sapply(1:length(liste_matSimilarity), FUN = function(i){
       noms_block1_block2_i = names(liste_matSimilarity)[i]
@@ -3551,14 +3560,14 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
                              weight = w)
       
       # idx
-      if(!is.null(vec_varBlock) & !is.null(vec_varBlockInteret) & !is.null(vec_varRep))
+      if(!is.null(vec_varBlock) & !is.null(vec_varBlockInteret2) & !is.null(vec_varRep))
       {
         
         idx = sapply(1:dim(relations)[1], FUN = function(i){
           node.X1_i = relations$from[i]
           node.X2_i = relations$to[i]
           
-          if(node.X1_i%in%vec_varBlockInteret | node.X2_i%in%vec_varBlockInteret)
+          if(node.X1_i%in%vec_varBlockInteret2 | node.X2_i%in%vec_varBlockInteret2)
           {
             res = TRUE
             
@@ -3573,7 +3582,7 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
           return(res)
         }) 
         
-      }else if(!is.null(vec_varBlock) & is.null(vec_varBlockInteret) & !is.null(vec_varRep))
+      }else if(!is.null(vec_varBlock) & is.null(vec_varBlockInteret2) & !is.null(vec_varRep))
       {
         idx = sapply(1:dim(relations)[1], FUN = function(i){
           node.X1_i = relations$from[i]
@@ -3590,7 +3599,7 @@ networkVar <-function(liste_matSimilarity_group = liste_matSimilarity_group,
           return(res)
         }) 
         
-      }else if(is.null(vec_varBlockEtReponse) & !is.null(vec_varBlockInteret) & !is.null(vec_varRep))
+      }else if(is.null(vec_varBlockEtReponse) & !is.null(vec_varBlockInteret2) & !is.null(vec_varRep))
       {
         idx = rep(TRUE, dim(relations)[1])
         

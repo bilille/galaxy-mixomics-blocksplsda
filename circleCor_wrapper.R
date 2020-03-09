@@ -76,8 +76,11 @@ print("blocks_vector:")
 print(blocks_vector)
 
 
+# pdf(args$output_pdf, width=12, height=9)
+pdf(args$output_pdf)
 
-pdf(args$output_pdf, width=12, height=9)
+mar = c(5.1, 4.1, 4.1, 9.1)
+par(mar = mar)
 
 varSelect = circleCor(liste_dataframe_cor_comp_var_global = liste_dataframe_cor_comp_var_global,
                       liste_vec_indice_blockSelect = liste_vec_indice_blockSelect,

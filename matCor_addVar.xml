@@ -1,12 +1,12 @@
-<tool id="matCor_addVar" name="matCor_addVar" version="0.2.0" profile="16.04" workflow_compatible="true">
+<tool id="matCor_addVar" name="matCor_addVar" version="0.3.0" profile="16.04" workflow_compatible="true">
 
-    <description></description>
-    
+    <description>computes all the correlations needed to plot a correlation circle and determines which correlation circles can be superimposed</description>
+
     <requirements>
         <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
         <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
-    
+
     <stdio>
         <!-- <exit_code range="1:" level="fatal" /> -->
     </stdio>
@@ -24,9 +24,15 @@
     </command>
 
     <inputs>
-        <param name="input_rdata" type="data" format="rdata" label="Input RData file from block.SPLSDA"/>
-        <param name="cutoff_comp" type="float" value="0.8" min="0" max="1" label="" help="" />
-        <param name="mat_block_Y" type="data" format="tabular" label="Matrix Block Y" />
+        <param name="input_rdata" type="data" format="rdata"
+               label="Input RData file from block.SPLSDA"
+               help="This is the RData output file from the block.splsda function." />
+        <param name="cutoff_comp" type="float" value="0.8" min="0" max="1"
+               label="Cutoff comp"
+               help="[cutoff_comp] Two correlation circles will be superimposed if the correlation of their first and second axis is greater than cutoff_comp in absolute value." />
+        <param name="mat_block_Y" type="data" format="tabular"
+               label="Matrix Block Y"
+               help="Matrix Block Y in tabular format. This table contains the name of the samples in the first column. The other columns correspond to phenotypes. For each of these other columns, a column determines which sample is associated with this phenotype (value equals to 1) or not (value equals to 0). The name of the samples in Matrix Block Y (transposed), in the sample metadata (transposed) and for all datasets have to be in the same order" />
     </inputs>
 
     <outputs>

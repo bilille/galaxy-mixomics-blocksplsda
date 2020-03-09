@@ -1,12 +1,12 @@
-<tool id="computeMatSimilarity" name="computeMatSimilarity" version="0.2.0" profile="16.04" workflow_compatible="true">
+<tool id="computeMatSimilarity" name="computeMatSimilarity" version="0.3.0" profile="16.04" workflow_compatible="true">
 
-    <description></description>
-    
+    <description>performs the computation of the similarities. The similarity between two variables is an approximation of the correlation between these two variables.</description>
+
     <requirements>
         <!-- <requirement type="package" version="6.8">bioconductor-mixomics</requirement> -->
         <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
-    
+
     <stdio>
         <!-- <exit_code range="1:" level="fatal" /> -->
     </stdio>
@@ -21,7 +21,9 @@
     </command>
 
     <inputs>
-        <param name="input_rdata" type="data" format="rdata" label="Input RData file from addVariablesResponses"/>
+        <param name="input_rdata" type="data" format="rdata"
+               label="Input RData file"
+               help="output RData file from matCor_addVar"/>
     </inputs>
 
     <outputs>

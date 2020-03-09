@@ -1,12 +1,12 @@
-<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.2.0" profile="16.04" workflow_compatible="true">
+<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.3.0" profile="16.04" workflow_compatible="true">
 
     <description>performs N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis</description>
-    
+
     <requirements>
         <requirement type="package" version="6.8">bioconductor-mixomics</requirement>
         <requirement type="package" version="2.0">r-argparse</requirement>
     </requirements>
-    
+
 <!--     <stdio>
         <exit_code range="1:" level="fatal" />
     </stdio> -->
@@ -47,16 +47,31 @@
     <inputs>
         <repeat name="blocks" title="Blocks">
             <param name="block_name" type="text" label="Block name" />
-            <param name="keep" type="integer" value="0" min="0" label="Number of variables to select for each component" help="Default is to keep all variables" />
-            <param name="data_matrix" type="data" format="tabular" label="Data matrix" help="rows = variables, columns = samples" />
-            <param name="variable_metadata" type="data" format="tabular" optional="true" label="Variables metadata" help="rows = variables" />
+            <param name="keep" type="integer" value="0" min="0"
+                   label="Number of variables to select for each component"
+                   help="[keep] Estimation of the number of variables in the block correlated with variables from the other blocks and correlated with response variables. If set to 0, all variables will be selected." />
+            <param name="data_matrix" type="data" format="tabular"
+                   label="Data matrix"
+                   help="Block data in tabular format (rows = variables, columns = samples). The first column contains the variables names and the first row contains the samples names. Samples names must be in the same order for all blocks and the sample metadata (transposed). The data must not contain missing values." />
+            <param name="variable_metadata" type="data" format="tabular" optional="true"
+                   label="Variables metadata [optional]"
+                   help="Variables metadata in tabular format (rows = variables). The first colum contains the variables names. The first row contains the metadata column names. The number of rows in the metadata file must be the same than the number of rows in the block data file, and the variables need to be in the same order. If a metadata file is provided, block.splsda output will be appended as new columns, otherwise a new file will be created." />
         </repeat>
-        <param name="sample_metadata_in" type="data" format="tabular" label="Samples metadata matrix" />
-        <param name="sample_description_col" type="integer" value="0" min="0" label="Sample description column number" help="Use the last column by default" />
-        <param name="ncomp" type="integer" value="2" min="1" label="Number of components to include in the model" />
-        <param name="correlation" type="boolean" truevalue="--correlation" falsevalue="" checked="false" label="Correlation between all blocks"/>
+        <param name="sample_metadata_in" type="data" format="tabular"
+               label="Samples metadata"
+               help="Samples metadata in tabular format (rows = samples). The first column contains the sample names. The first row contains the metadata column names. Samples names must be in the same order (transposed) than all the blocks. One of the column (the last by default) must contain the samples groups for integration." />
+        <param name="sample_description_col" type="integer" value="0" min="0"
+               label="Samples groups column number"
+               help="Column from the samples metadata file containing samples groups. If set to 0, the last column will be used." />
+        <param name="ncomp" type="integer" value="2" min="1"
+               label="Number of components to include in the model"
+               help="[ncomp] Number of new variables (components) computed by the data integration." />
+        <param name="correlation" type="boolean" truevalue="--correlation"
+               falsevalue="" checked="false"
+               label="Correlation between all blocks"
+               help="[design] If set to Yes, data integration will take into account correlations between all the blocks (design matrix with diagonal coefficients set to 0 and the rest of the coefficients set to 1)." />
         <section name="adv" title="Advanced Options" expanded="false">
-            <param name="scheme" type="select" label="Scheme">
+<!--             <param name="scheme" type="select" label="Scheme">
                 <option value="horst" selected="true">horst</option>
                 <option value="factorial"            >factorial</option>
                 <option value="centroid"             >centroid</option>
@@ -66,23 +81,32 @@
                 <option value="canonical"                 >canonical</option>
                 <option value="invariant"                 >invariant</option>
                 <option value="classic"                   >classic</option>
-            </param>
-            <param name="maxiter" type="integer" value="100" min="1" label="Maximum number of iterations" />
-            <param name="scale" type="boolean" truevalue="--scale" falsevalue="" checked="true" label="Scale" help="if checked, each block is standardized to zero means and unit variances" />
+            </param> -->
+            <param name="maxiter" type="integer" value="100" min="1"
+                   label="Maximum number of iterations"
+                   help="[max.iter] Maximum number of iterations performed by block.splsda." />
+<!--             <param name="scale" type="boolean" truevalue="-\-scale" falsevalue="" checked="true"
+                   label="Scale"
+                   help="if checked, each block is standardized to zero means and unit variances" />
             <param name="init" type="select" label="Init">
                 <option value="svd" selected="true">svd</option>
                 <option value="svd.single"         >svd.single</option>
             </param>
-            <param name="tol" type="float" value="1e-06" min="0" label="Convergence stopping value (tol)" />
-            <param name="nearzerovar" type="boolean" truevalue="--nearzerovar" falsevalue="" checked="false" label="Should be set to TRUE in particular for data with many zero values" />
+            <param name="tol" type="float" value="1e-06" min="0"
+                   label="Convergence stopping value"
+                   help="[tol]" />
+            <param name="nearzerovar" type="boolean" truevalue="-\-nearzerovar" falsevalue="" checked="false"
+                   label="Should be set to TRUE in particular for data with many zero values" /> -->
         </section>
     </inputs>
 
     <outputs>
         <data name="rdata_out" format="rdata" label="${tool.name}_output.rdata" />
-        <data name="sample_metadata_out" format="tabular" label="${tool.name}_${sample_metadata_in.name}" />
+        <data name="sample_metadata_out" format="tabular"
+              label="${tool.name}_${sample_metadata_in.name}" />
         <collection name="blocks_output" type="list" label="${tool.name}_blocks_output">
-            <discover_datasets pattern="(?P&lt;designation&gt;.+)\.tsv" directory="outdir" format="tabular" />
+            <discover_datasets pattern="(?P&lt;designation&gt;.+)\.tsv"
+                               directory="outdir" format="tabular" />
         </collection>
     </outputs>
 
