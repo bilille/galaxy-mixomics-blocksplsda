@@ -11,18 +11,28 @@ suppressPackageStartupMessages(require(argparse))
 
 parser <- ArgumentParser(description='Run the mixOmics block.splsda function')
 
-parser$add_argument('--block', dest='blocks_list', nargs=4, action="append", required=TRUE, help="Block name + nb variables to select + data matrix file + variables metadata file")
-parser$add_argument('--sample_metadata_in', dest='sample_metadata_in', required=TRUE, help="Samples metadata file")
-parser$add_argument('--sample_description_col', dest='sample_description_col', type='integer', required=TRUE, help="Sample description column number")
-parser$add_argument('--ncomp', dest='ncomp', type='integer', required=TRUE, help="Number of components to include in the model")
-parser$add_argument('--correlation', dest='correlation', action="store_true", help="Add correlation between all blocks")
-parser$add_argument('--scheme', dest='scheme', required=TRUE, help="Scheme")
-parser$add_argument('--mode', dest='mode', required=TRUE, help="Mode")
-parser$add_argument('--maxiter', dest='maxiter', type='integer', required=TRUE, help="Maximum number of iterations")
-parser$add_argument('--scale', dest='scale', action="store_true", help="Each block is standardized to zero means and unit variances")
-parser$add_argument('--init', dest='init', required=TRUE, help="Init (svd or svd.single)")
-parser$add_argument('--tol', dest='tol', type='double', required=TRUE, help="Convergence stopping value")
-parser$add_argument('--nearzerovar', dest='nearzerovar', action="store_true", help="Should be set in particular for data with many zero values")
+parser$add_argument('--block', dest='blocks_list', nargs=4, action="append", required=TRUE,
+                    help="Block name + nb variables to select + data matrix file + variables metadata file")
+parser$add_argument('--sample_metadata_in', dest='sample_metadata_in', required=TRUE,
+                    help="Samples metadata file")
+parser$add_argument('--sample_description_col', dest='sample_description_col', type='integer',
+                    default=0, help="Sample description column number")
+parser$add_argument('--ncomp', dest='ncomp', type='integer', default=2,
+                    help="Number of components to include in the model")
+parser$add_argument('--correlation', dest='correlation', action="store_true",
+                    help="Add correlation between all blocks")
+parser$add_argument('--scheme', dest='scheme', default="horst", help="Scheme")
+parser$add_argument('--mode', dest='mode', default="regression", help="Mode")
+parser$add_argument('--maxiter', dest='maxiter', type='integer', default=100,
+                    help="Maximum number of iterations")
+parser$add_argument('--scale', dest='scale', action="store_true",
+                    help="Each block is standardized to zero means and unit variances")
+parser$add_argument('--init', dest='init', default="svd",
+                    help="Init (svd or svd.single)")
+parser$add_argument('--tol', dest='tol', type='double', default=1e-06,
+                    help="Convergence stopping value")
+parser$add_argument('--nearzerovar', dest='nearzerovar', action="store_true",
+                    help="Should be set in particular for data with many zero values")
 parser$add_argument('--rdata_out', dest='rdata_out', required=TRUE, help="Output Rdata file")
 parser$add_argument('--sample_metadata_out', dest='sample_metadata_out', required=TRUE, help="Output sample metadata file")
 parser$add_argument('--variable_metadata_outdir', dest='variable_metadata_outdir', required=TRUE, help="Output variable metadata directory")

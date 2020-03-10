@@ -1,4 +1,4 @@
-<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.3.0" profile="16.04" workflow_compatible="true">
+<tool id="mixomics_blocksplsda" name="mixOmics block.splsda" version="0.4.0" profile="16.04" workflow_compatible="true">
 
     <description>performs N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis</description>
 
@@ -31,13 +31,14 @@
         --sample_description_col ${sample_description_col}
         --ncomp ${ncomp}
         ${correlation}
-        --scheme ${adv.scheme}
-        --mode ${adv.mode}
+        ##--scheme ${adv.scheme}
+        ##--mode ${adv.mode}
         --maxiter ${adv.maxiter}
-        ${adv.scale}
-        --init ${adv.init}
-        --tol ${adv.tol}
-        ${adv.nearzerovar}
+        ##${adv.scale}
+        --scale ## always activated hidden param
+        ##--init ${adv.init}
+        ##--tol ${adv.tol}
+        ##${adv.nearzerovar}
         --rdata_out ${rdata_out}
         --sample_metadata_out ${sample_metadata_out}
         --variable_metadata_outdir outdir
@@ -95,7 +96,7 @@
             <param name="tol" type="float" value="1e-06" min="0"
                    label="Convergence stopping value"
                    help="[tol]" />
-            <param name="nearzerovar" type="boolean" truevalue="-\-nearzerovar" falsevalue="" checked="false"
+            <param name="nearzerovar" type="boolean" truevalue="-\-nearzerovar" falsevalue="" checked="true"
                    label="Should be set to TRUE in particular for data with many zero values" /> -->
         </section>
     </inputs>
