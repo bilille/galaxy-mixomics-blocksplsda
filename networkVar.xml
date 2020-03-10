@@ -1,4 +1,4 @@
-<tool id="networkVar" name="networkVar" version="0.3.0" profile="16.04" workflow_compatible="true">
+<tool id="networkVar" name="networkVar" version="0.4.0" profile="16.04" workflow_compatible="true">
 
     <description>creates a network between selected variables of datasets and the response variables. In the network, the similarity between two variables is associated with the link between these two variables.</description>
 
@@ -42,7 +42,7 @@
                help="output tabular file from circleCor"/>
 
         <!-- Fichier avec noms de gènes/variables, donné par l'utilisateur -->
-        <param name="var_of_interest_file" type="data" format="tabular" optional="true"
+        <param name="var_of_interest_file" type="data" format="txt" optional="true"
                label="Variables of interest (Optional)"
                help="these variables have to belong to datasets that can be superimposed"/>
 
